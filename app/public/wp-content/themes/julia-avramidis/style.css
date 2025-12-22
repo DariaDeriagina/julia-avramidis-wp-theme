@@ -211,6 +211,7 @@ body.admin-bar .site-header {
 	background: transparent;
 	color: var(--c-text);
 	border-color: var(--c-accent);
+	border-width: 2px;
 }
 
 .btn--outline:hover,
@@ -379,7 +380,7 @@ body.admin-bar .site-header {
 .about__title {
 	margin: 0 0 16px;
 	font-family: var(--ff-serif);
-	font-weight: 300;
+	font-weight: 500;
 	letter-spacing: 0.04em;
 	font-size: clamp(28px, 3.2vw, 44px);
 	line-height: 1.12;
@@ -543,7 +544,7 @@ body.admin-bar .site-header {
 	}
 }
 /* =========================================================
-   DIVIDER (Between sections) — Option B (img tag)
+   MARK: DIVIDER (Between sections) — Option B (img tag)
    Full-bleed background image + centered headline on top
    Works with your current PHP:
    .divider-card > .divider-card__media > img.divider-card__img + h2.divider-card__title
@@ -642,4 +643,217 @@ body.admin-bar .site-header {
 		font-size: clamp(20px, 7vw, 34px);
 		padding-inline: 14px;
 	}
+}
+/* =========================================================
+   MARK: SERVICES (Figma-driven)
+   - ACF Free compatible (fixed 2 cards)
+   - Breakpoint aligned with theme: 900px
+   - Robust alternating layout using grid-template-areas
+   ========================================================= */
+
+.section--services {
+	padding-block: clamp(44px, 6vw, 90px);
+	background: var(--c-bg);
+	color: var(--c-text);
+}
+
+/* Header */
+.services__header {
+	text-align: center;
+	max-width: 60rem;
+	margin-inline: auto;
+	padding-inline: clamp(18px, 4vw, 56px);
+}
+
+.services__title {
+	margin: 0;
+	font-family: var(--ff-ui);
+	font-size: clamp(18px, 2.2vw, 22px);
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.services__subtitle {
+	margin: clamp(10px, 1.2vw, 14px) 0 0;
+	font-family: var(--ff-sub);
+	color: var(--c-accent);
+	font-size: clamp(16px, 2.1vw, 18px);
+	line-height: 1.35;
+}
+
+/* List */
+.services__list {
+	max-width: 62rem;
+	margin-inline: auto;
+	margin-top: clamp(22px, 3vw, 34px);
+	padding-inline: clamp(18px, 4vw, 56px);
+
+	display: flex;
+	flex-direction: column;
+	gap: clamp(18px, 3vw, 32px);
+}
+
+/* Card base */
+.service-card {
+	border: 1px solid var(--c-accent);
+	background: color-mix(in srgb, var(--c-bg) 92%, #fff 8%);
+	padding: clamp(16px, 2.3vw, 26px);
+}
+
+/* Media */
+.service-card__media {
+	width: 100%;
+}
+
+.service-card__img {
+	width: 100%;
+	display: block;
+	aspect-ratio: 4 / 5;
+	object-fit: cover;
+}
+
+/* Placeholder when no image is provided */
+.service-card__media .service-card__img[aria-hidden="true"],
+.service-card__media .service-card__img:not(img) {
+	background: color-mix(in srgb, var(--c-bg) 80%, #000 20%);
+}
+
+/* Content */
+.service-card__content {
+	margin-top: clamp(14px, 2vw, 18px);
+}
+
+.service-card__label {
+	margin: 0 0 6px;
+	font-family: var(--ff-ui);
+	font-size: 12px;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--c-accent);
+}
+
+.service-card__heading {
+	margin: 0 0 clamp(10px, 1.4vw, 12px);
+	font-family: var(--ff-display);
+	font-size: clamp(26px, 3.2vw, 34px);
+	line-height: 1.05;
+}
+
+.service-card__text {
+	font-family: var(--ff-sub);
+	font-size: clamp(14px, 1.6vw, 16px);
+	line-height: 1.55;
+	max-width: 52ch;
+}
+/* =========================================================
+   MARK: SERVICES Typography (pixel-perfect overrides)
+   ========================================================= */
+
+/* SERVICES (Inter SemiBold 30) */
+.services__title {
+	font-family: var(--ff-ui);
+	font-weight: 600; /* SemiBold */
+	font-size: 30px;
+	line-height: 1.2;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+/* Subtitle (Playfair Display SC Medium 24) */
+.services__subtitle {
+	font-family: var(--ff-display);
+	font-weight: 500; /* Medium */
+	font-size: 24px;
+	line-height: 1.35;
+	color: var(--c-accent);
+	margin-top: 10px;
+}
+
+/* SCENE label (Inter Medium 20) */
+.service-card__label {
+	font-family: var(--ff-ui);
+	font-weight: 500; /* Medium */
+	font-size: 20px;
+	line-height: 1.2;
+	letter-spacing: 0.04em; /* keep your editorial tracking */
+	text-transform: uppercase;
+	color: var(--c-accent);
+	margin: 0 0 6px;
+}
+
+/* Body text (Inter Regular 18) */
+.service-card__text {
+	font-family: var(--ff-ui);
+	font-weight: 400; /* Regular */
+	font-size: 18px;
+	line-height: 1.55;
+	max-width: 52ch;
+}
+
+/* Optional: keep heading visually consistent with Figma (no change required)
+   If you want to lock it too, tell me your exact heading size/weight. */
+
+/* Desktop: 2-column grid + alternating areas (this fixes Scene 2) */
+@media (min-width: 901px) {
+	.service-card {
+		display: grid;
+		grid-template-columns: minmax(220px, 280px) 1fr;
+		grid-template-areas: "media content";
+		gap: clamp(18px, 2.6vw, 32px);
+		align-items: center;
+	}
+
+	.service-card__media {
+		grid-area: media;
+		justify-self: start;
+	}
+
+	.service-card__content {
+		grid-area: content;
+		margin-top: 0;
+	}
+
+	/* Even cards: swap areas + keep image fixed width on the right */
+	.services__list .service-card:nth-child(even) {
+		grid-template-columns: 1fr minmax(220px, 280px);
+		grid-template-areas: "content media";
+	}
+
+	.services__list .service-card:nth-child(even) .service-card__media {
+		justify-self: end;
+	}
+}
+
+/* CTA */
+.services__cta {
+	max-width: 62rem;
+	margin-inline: auto;
+	padding-inline: clamp(18px, 4vw, 56px);
+	margin-top: clamp(22px, 4vw, 44px);
+
+	display: flex;
+	justify-content: center;
+}
+
+.services__cta a {
+	width: min(320px, 100%);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 14px 22px;
+	border: 2px solid var(--c-text);
+	background: transparent;
+
+	font-family: var(--ff-ui);
+	font-size: 18px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--c-accent);
+	text-decoration: none;
+}
+
+.services__cta a:hover {
+	filter: brightness(0.95);
 }

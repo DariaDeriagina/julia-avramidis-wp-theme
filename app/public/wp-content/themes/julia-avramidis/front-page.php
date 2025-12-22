@@ -13,7 +13,11 @@ get_header();
    0) Page context
    - Ensures get_field() reads fields from the correct page
    ========================================================= */
-$page_id = get_queried_object_id();
+$page_id = (int) get_option('page_on_front');
+if (!$page_id) {
+  $page_id = get_queried_object_id();
+}
+
 
 /* =========================================================
    1) HERO defaults (fallbacks keep layout stable)
@@ -332,12 +336,197 @@ $divider_headline_safe = wp_kses_post( nl2br( esc_html($divider_headline) ) );
 
 
 
+<?php
+/**
+ * MARK: SERVICES section (ACF Free: fixed 2 scenes, no repeater)
+ * - Reads ACF fields directly (because "services" is a Field Group title, not a field)
+ * - Uses scene_1 + scene_2 (Group fields)
+ * - Image return format: Image ID (your setting)
+ */
+
+/* Real front page ID (critical) */
+$page_id = (int) get_option('page_on_front');
+if (!$page_id) {
+  $page_id = (int) get_queried_object_id();
+}
+
+/* -----------------------------
+   Defaults
+----------------------------- */
+$section_title    = 'SERVICES';
+$section_subtitle = 'How Julia can support your story';
+
+$scene_1 = array(
+  'label'       => 'SCENE 01',
+  'title'       => 'Script Evaluation & Story Notes',
+  'description' => 'A focused review of your script and story structure with clear, actionable notes to strengthen character, pacing, and emotional impact.',
+  'image_id'    => 0,
+  'link'        => array(),
+);
+
+$scene_2 = array(
+  'label'       => 'SCENE 02',
+  'title'       => 'Development Support & Revisions',
+  'description' => 'Ongoing guidance through revisions—scene-level feedback, narrative clarity, and industry-aware suggestions to elevate the next draft.',
+  'image_id'    => 0,
+  'link'        => array(),
+);
+
+$cta_link = array(
+  'url'    => '#contact',
+  'title'  => "LET'S CRAFT YOUR STORY",
+  'target' => '_self',
+);
+
+$cta_label_override = '';
+
+/* -----------------------------
+   Helpers
+----------------------------- */
+$build_desc = function ($raw) {
+  if (empty($raw)) return '';
+  if (is_string($raw) && strpos($raw, '<') === false) return wpautop($raw);
+  return $raw;
+};
+
+/* -----------------------------
+   ACF reads
+----------------------------- */
+if (function_exists('get_field')) {
+
+  // Top-level fields in the "services" field group
+  $section_title    = get_field('section_title', $page_id) ?: $section_title;
+  $section_subtitle = get_field('section_subtitle', $page_id) ?: $section_subtitle;
+
+  // Group field: scene_1
+  $s1 = get_field('scene_1', $page_id);
+  if (is_array($s1)) {
+    $scene_1['label']       = !empty($s1['scene_1_label']) ? (string) $s1['scene_1_label'] : $scene_1['label'];
+    $scene_1['title']       = !empty($s1['scene_1_title']) ? (string) $s1['scene_1_title'] : $scene_1['title'];
+    $scene_1['description'] = !empty($s1['scene_1_description']) ? $s1['scene_1_description'] : $scene_1['description'];
+    $scene_1['image_id']    = !empty($s1['scene_1_image']) ? (int) $s1['scene_1_image'] : 0;
+    $scene_1['link']        = (!empty($s1['scene_1_link']) && is_array($s1['scene_1_link'])) ? $s1['scene_1_link'] : array();
+  }
+
+  // Group field: scene_2
+  $s2 = get_field('scene_2', $page_id);
+  if (is_array($s2)) {
+    $scene_2['label']       = !empty($s2['scene_2_label']) ? (string) $s2['scene_2_label'] : $scene_2['label'];
+    $scene_2['title']       = !empty($s2['scene_2_title']) ? (string) $s2['scene_2_title'] : $scene_2['title'];
+    $scene_2['description'] = !empty($s2['scene_2_description']) ? $s2['scene_2_description'] : $scene_2['description'];
+    $scene_2['image_id']    = !empty($s2['scene_2_image']) ? (int) $s2['scene_2_image'] : 0;
+    $scene_2['link']        = (!empty($s2['scene_2_link']) && is_array($s2['scene_2_link'])) ? $s2['scene_2_link'] : array();
+  }
+
+  // CTA fields (top-level)
+  $cta = get_field('cta_link', $page_id);
+  if (is_array($cta) && !empty($cta['url'])) {
+    $cta_link = array_merge($cta_link, $cta);
+  }
+
+  $cta_label_override = get_field('cta_label', $page_id) ?: '';
+}
+
+/* -----------------------------
+   Normalize CTA
+----------------------------- */
+$cta_url     = !empty($cta_link['url']) ? $cta_link['url'] : '';
+$cta_target  = !empty($cta_link['target']) ? $cta_link['target'] : '_self';
+$cta_label   = !empty($cta_label_override)
+  ? $cta_label_override
+  : (!empty($cta_link['title']) ? $cta_link['title'] : "LET'S CRAFT YOUR STORY");
+
+$scenes = array($scene_1, $scene_2);
+?>
+
+<section id="services" class="section section--services" aria-labelledby="services-title">
+  <div class="services__header">
+    <h2 id="services-title" class="services__title"><?php echo esc_html($section_title); ?></h2>
+
+    <?php if (!empty($section_subtitle)) : ?>
+      <p class="services__subtitle"><?php echo esc_html($section_subtitle); ?></p>
+    <?php endif; ?>
+  </div>
+
+  <div class="services__list">
+    <?php foreach ($scenes as $i => $scene) : ?>
+      <?php
+        $label  = !empty($scene['label']) ? $scene['label'] : ('SCENE ' . str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT));
+        $title  = !empty($scene['title']) ? $scene['title'] : '';
+        $desc   = $build_desc($scene['description'] ?? '');
+        $img_id = !empty($scene['image_id']) ? (int) $scene['image_id'] : 0;
+
+        $link   = (is_array($scene['link'] ?? null)) ? $scene['link'] : array();
+        $url    = !empty($link['url']) ? $link['url'] : '';
+        $target = !empty($link['target']) ? $link['target'] : '_self';
+        $rel    = ($target === '_blank') ? 'noopener noreferrer' : 'noopener';
+      ?>
+
+      <article class="service-card">
+        <div class="service-card__media">
+          <?php if ($img_id) : ?>
+            <?php
+              echo wp_get_attachment_image(
+                $img_id,
+                'large',
+                false,
+                array(
+                  'class'    => 'service-card__img',
+                  'loading'  => 'lazy',
+                  'decoding' => 'async',
+                  'sizes'    => '(max-width: 900px) 92vw, 280px',
+                )
+              );
+            ?>
+          <?php else : ?>
+            <div class="service-card__img" aria-hidden="true"></div>
+          <?php endif; ?>
+        </div>
+
+        <div class="service-card__content">
+          <div class="service-card__label"><?php echo esc_html($label); ?></div>
+
+          <?php if (!empty($title)) : ?>
+            <h3 class="service-card__heading">
+              <?php if (!empty($url)) : ?>
+                <a href="<?php echo esc_url($url); ?>" target="<?php echo esc_attr($target); ?>" rel="<?php echo esc_attr($rel); ?>">
+                  <?php echo esc_html($title); ?>
+                </a>
+              <?php else : ?>
+                <?php echo esc_html($title); ?>
+              <?php endif; ?>
+            </h3>
+          <?php endif; ?>
+
+          <?php if (!empty($desc)) : ?>
+            <div class="service-card__text">
+              <?php echo wp_kses_post($desc); ?>
+            </div>
+          <?php endif; ?>
+        </div>
+      </article>
+
+    <?php endforeach; ?>
+  </div>
+
+  <?php if (!empty($cta_url) && !empty($cta_label)) : ?>
+   <div class="services__cta">
+    <a class="btn btn--outline"
+       href="<?php echo esc_url($cta_url); ?>"
+       target="<?php echo esc_attr($cta_target); ?>"
+       <?php echo ($cta_target === '_blank') ? 'rel="noopener noreferrer"' : 'rel="noopener"'; ?>>
+      <?php echo esc_html($cta_label); ?>
+    </a>
+  </div>
+  <?php endif; ?>
+</section>
+
 
   <!-- =========================================================
        PLACEHOLDER SECTIONS (keep for now)
        ========================================================= -->
 
-  <section id="services" class="section"><div class="container"><h2>Services</h2></div></section>
+
   <section id="testimonials" class="section"><div class="container"><h2>Testimonials</h2></div></section>
   <section id="contact" class="section"><div class="container"><h2>Contact</h2></div></section>
 
