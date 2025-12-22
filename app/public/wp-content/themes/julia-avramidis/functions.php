@@ -2,92 +2,88 @@
 /**
  * Theme functions for "Julia Avramidis"
  * - Theme supports + menu locations
- * - Enqueue CSS + Google Fonts + JS (mobile nav, header helpers)
+ * - Enqueue CSS + Google Fonts + JS (nav + helpers + testimonials)
  */
 
-if ( ! defined('ABSPATH') ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /* =========================================================
    1) Theme setup (runs once)
    ========================================================= */
-add_action('after_setup_theme', function () {
+add_action( 'after_setup_theme', 'julia_setup_theme' );
 
-  // ---------------------------------------------------------
-  // Document title (<title>) handled by WordPress
-  // ---------------------------------------------------------
-  add_theme_support('title-tag');
+function julia_setup_theme() {
 
-  // ---------------------------------------------------------
-  // Featured images (useful for blog + OG sharing)
-  // ---------------------------------------------------------
-  add_theme_support('post-thumbnails');
+	// Document title (<title>) handled by WordPress
+	add_theme_support( 'title-tag' );
 
-  // ---------------------------------------------------------
-  // Cleaner HTML output for some core elements
-  // ---------------------------------------------------------
-  add_theme_support('html5', ['style', 'script']);
+	// Featured images (useful for blog + OG sharing)
+	add_theme_support( 'post-thumbnails' );
 
-  // ---------------------------------------------------------
-  // Register menu locations (Appearance → Menus)
-  // ---------------------------------------------------------
-  register_nav_menus([
-    'primary' => __('Primary Menu', 'julia'),
-  ]);
-});
+	// Cleaner HTML output for some core elements
+	add_theme_support( 'html5', array( 'style', 'script' ) );
+
+	// Custom Logo (Appearance → Customize → Site Identity)
+	add_theme_support(
+		'custom-logo',
+		array(
+			'height'      => 80,
+			'width'       => 320,
+			'flex-height' => true,
+			'flex-width'  => true,
+		)
+	);
+
+	// Register menu locations (Appearance → Menus)
+	register_nav_menus(
+		array(
+			'primary' => __( 'Primary Menu', 'julia' ),
+		)
+	);
+}
 
 /* =========================================================
    2) Front-end assets (CSS/JS + Google Fonts)
    ========================================================= */
-add_action('wp_enqueue_scripts', function () {
+add_action( 'wp_enqueue_scripts', 'julia_enqueue_assets' );
 
-  // ---------------------------------------------------------
-  // Cache-busting: when you bump theme version, browsers reload
-  // ---------------------------------------------------------
-  $ver = wp_get_theme()->get('Version');
+function julia_enqueue_assets() {
 
-  // ---------------------------------------------------------
-  // Google Fonts (Playfair / Cormorant / Inter)
-  // NOTE: This must live INSIDE the action.
-  // ---------------------------------------------------------
- wp_enqueue_style(
-  'julia-fonts',
-  'https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@400;700&family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap',
-  [],
-  null
-);
+	$ver = wp_get_theme()->get( 'Version' );
 
+	// Google Fonts (Playfair / Cormorant / Inter)
+	wp_enqueue_style(
+		'julia-fonts',
+		'https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@400;700&family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap',
+		array(),
+		null
+	);
 
-  // ---------------------------------------------------------
-  // Main stylesheet (style.css)
-  // Depends on fonts so typography is correct immediately.
-  // ---------------------------------------------------------
-  wp_enqueue_style(
-    'julia-style',
-    get_stylesheet_uri(),
-    ['julia-fonts'],
-    $ver
-  );
+	// Main stylesheet (style.css) — depends on fonts so typography loads cleanly
+	wp_enqueue_style(
+		'julia-style',
+		get_stylesheet_uri(),
+		array( 'julia-fonts' ),
+		$ver
+	);
 
-  // ---------------------------------------------------------
-  // Theme JS
-  // File: /assets/js/nav.js
-  // (your hamburger script expects #site-header + .nav-toggle + #site-nav)
-  // ---------------------------------------------------------
-  wp_enqueue_script(
-    'julia-nav',
-    get_theme_file_uri('/assets/js/nav.js'),
-    [],
-    $ver,
-    true // load in footer
-  );
-});
-// ---------------------------------------------------------
-// Custom Logo (Appearance → Customize → Site Identity)
-// ---------------------------------------------------------
-add_theme_support('custom-logo', [
-  'height'      => 80,
-  'width'       => 320,
-  'flex-height' => true,
-  'flex-width'  => true,
-]);
+	// Theme JS: nav / header helpers
+	wp_enqueue_script(
+		'julia-nav',
+		get_theme_file_uri( '/assets/js/nav.js' ),
+		array(),
+		$ver,
+		true
+	);
 
+	// Theme JS: testimonials slider (dots + prev/next)
+	wp_enqueue_script(
+		'julia-testimonials',
+		get_theme_file_uri( '/assets/js/testimonials.js' ),
+		array(),
+		$ver,
+		true
+	);
+}

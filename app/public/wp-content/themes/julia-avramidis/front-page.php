@@ -522,12 +522,125 @@ $scenes = array($scene_1, $scene_2);
 </section>
 
 
+<?php
+/* =========================================================
+   MARK: TESTIMONIALS (ACF Free: fixed 3 cards)
+========================================================= */
+
+$page_id = (int) get_option('page_on_front');
+if (!$page_id) {
+  $page_id = get_queried_object_id();
+}
+
+$defaults = [
+  [
+    'heading'    => 'THEIR HONEST WORDS',
+    'pull_quote' => '“Julia’s notes helped me see the story I was *trying* to tell — and then actually tell it.”',
+    'body'       => '"She identified the emotional engine of each scene, flagged what wasn’t landing, and gave clear, practical suggestions that strengthened pacing and character motivation. I left the process with a sharper draft and a stronger sense of direction."',
+    'name'       => 'Maya Caldwell',
+    'role'       => 'Independent Screenwriter',
+  ],
+  [
+    'heading'    => 'REVIEW NUMBER TWO',
+    'pull_quote' => '“Thoughtful, precise, and deeply respectful of the voice of the writer.”',
+    'body'       => '"Julia’s feedback was both rigorous and encouraging. She caught structural issues I’d been circling for months and offered solutions that felt true to the world and tone of the script. The rewrite was faster, cleaner, and more confident because of her guidance."',
+    'name'       => 'Daniel Rivera',
+    'role'       => 'Writer / Director',
+  ],
+  [
+    'heading'    => 'REVIEW NUMBER THREE',
+    'pull_quote' => '“If you want clarity, craft, and next-step momentum — this is the support you’re looking for.”',
+    'body'       => '"The notes were organized, actionable, and industry-aware. Julia helped me strengthen character arcs, tighten scenes, and raise the emotional stakes without losing what made the script mine. I’d recommend her to any writer serious about leveling up their draft."',
+    'name'       => 'Sofia Bennett',
+    'role'       => 'Story Producer',
+  ],
+];
+
+
+$cards = $defaults;
+
+if (function_exists('get_field')) {
+  $t = get_field('testimonials', $page_id);
+
+  if (is_array($t)) {
+    $map = ['t1' => 0, 't2' => 1, 't3' => 2];
+
+    foreach ($map as $key => $idx) {
+      if (!empty($t[$key]) && is_array($t[$key])) {
+        $g = $t[$key];
+
+        $cards[$idx]['heading']    = !empty($g['heading']) ? (string) $g['heading'] : $cards[$idx]['heading'];
+        $cards[$idx]['pull_quote'] = !empty($g['pull_quote']) ? (string) $g['pull_quote'] : $cards[$idx]['pull_quote'];
+        $cards[$idx]['body']       = !empty($g['body']) ? (string) $g['body'] : $cards[$idx]['body'];
+        $cards[$idx]['name']       = !empty($g['name']) ? (string) $g['name'] : $cards[$idx]['name'];
+        $cards[$idx]['role']       = !empty($g['role']) ? (string) $g['role'] : $cards[$idx]['role'];
+      }
+    }
+  }
+}
+?>
+
+<section id="testimonials" class="section section--testimonials" aria-label="Testimonials">
+  <div class="container">
+
+    <div class="testimonials" data-testimonials>
+      <div class="testimonials__viewport">
+        <div class="testimonials__track">
+          <?php foreach ($cards as $i => $c) : ?>
+            <article class="testimonial" data-testimonial>
+              <h3 class="testimonial__heading"><?php echo esc_html($c['heading']); ?></h3>
+
+              <p class="testimonial__pull">
+                <?php echo esc_html($c['pull_quote']); ?>
+              </p>
+
+              <p class="testimonial__body">
+                <?php echo esc_html($c['body']); ?>
+              </p>
+
+              <p class="testimonial__name">
+                <span class="testimonial__dash" aria-hidden="true">—</span>
+                <?php echo esc_html($c['name']); ?>
+              </p>
+
+              <p class="testimonial__role"><?php echo esc_html($c['role']); ?></p>
+            </article>
+          <?php endforeach; ?>
+        </div>
+      </div>
+
+      <!-- Dots (mobile) -->
+      <div class="testimonials__dots" aria-label="Testimonials navigation">
+        <?php foreach ($cards as $i => $_c) : ?>
+          <button class="testimonials__dot" type="button" data-dot="<?php echo esc_attr($i); ?>" aria-label="Go to testimonial <?php echo esc_attr($i + 1); ?>"></button>
+        <?php endforeach; ?>
+      </div>
+
+      <!-- Prev / Next (desktop) -->
+      <div class="testimonials__nav" aria-label="Testimonials controls">
+        <button class="testimonials__btn testimonials__btn--prev" type="button" data-prev>
+          <span aria-hidden="true" class="testimonials__arrow testimonials__arrow--left"></span>
+          <span class="testimonials__btn-text">PREV</span>
+        </button>
+
+        <button class="testimonials__btn testimonials__btn--next" type="button" data-next>
+          <span class="testimonials__btn-text">NEXT</span>
+          <span aria-hidden="true" class="testimonials__arrow testimonials__arrow--right"></span>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
   <!-- =========================================================
        PLACEHOLDER SECTIONS (keep for now)
        ========================================================= -->
 
 
-  <section id="testimonials" class="section"><div class="container"><h2>Testimonials</h2></div></section>
+
   <section id="contact" class="section"><div class="container"><h2>Contact</h2></div></section>
 
 </main>

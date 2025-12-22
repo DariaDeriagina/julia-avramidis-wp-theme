@@ -857,3 +857,234 @@ body.admin-bar .site-header {
 .services__cta a:hover {
 	filter: brightness(0.95);
 }
+/* =========================================================
+   MARK: TESTIMONIALS (Figma-driven)
+   Mobile: 1 card + dots
+   Desktop: 2 cards + prev/next
+   ========================================================= */
+
+.section--testimonials {
+	background: var(--c-bg);
+	padding-block: clamp(60px, 7vw, 120px);
+}
+
+.testimonials {
+	--dot: 18px;
+	--dot-gap: 22px;
+	--maroon: #4b0000; /* darkest */
+	--red: #d62b2b;
+	--pink: #f0b6b6;
+}
+
+/* Track / layout */
+.testimonials__viewport {
+	overflow: hidden;
+}
+
+.testimonials__track {
+	display: flex;
+	gap: clamp(28px, 4vw, 80px);
+	align-items: stretch;
+	will-change: transform;
+	transform: translateX(0);
+	transition: transform 420ms ease;
+}
+
+/* Mobile: 1 per view */
+.testimonial {
+	flex: 0 0 100%;
+	text-align: center;
+	padding-inline: clamp(14px, 6vw, 40px);
+}
+
+/* Desktop: 2 per view */
+@media (min-width: 901px) {
+	.testimonial {
+		flex-basis: calc(50% - (clamp(28px, 4vw, 80px) / 2));
+		padding-inline: 0;
+	}
+}
+
+/* Typography (match your request + fix tracking too big) */
+.testimonial__heading {
+	margin: 0 0 clamp(22px, 4vw, 34px);
+	font-family: var(--ff-ui);
+	font-weight: 500;
+	font-size: clamp(28px, 2.2vw, 32px);
+	letter-spacing: 0.04em; /* FIX: not huge */
+	text-transform: uppercase;
+	color: #1f1f1f;
+}
+
+.testimonial__pull {
+	margin: 0 auto clamp(26px, 4vw, 36px);
+	max-width: 22ch;
+
+	font-family: var(--ff-display);
+	font-weight: 500;
+	font-size: clamp(38px, 3.6vw, 56px);
+	line-height: 1.12;
+
+	color: var(--c-accent);
+}
+
+.testimonial__body {
+	margin: 0 auto clamp(26px, 4vw, 36px);
+	max-width: 48ch;
+
+	font-family: var(--ff-ui);
+	font-weight: 400;
+	font-size: clamp(18px, 1.4vw, 22px);
+	line-height: 1.45;
+
+	color: #1f1f1f;
+}
+
+.testimonial__name {
+	margin: 0 auto 10px;
+	font-family: var(--ff-ui);
+	font-weight: 700;
+	font-size: 22px;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: #1f1f1f;
+
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.testimonial__dash {
+	font-weight: 700;
+}
+
+.testimonial__role {
+	margin: 0;
+	font-family: var(--ff-ui);
+	font-weight: 500;
+	font-size: 20px;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: #1f1f1f;
+}
+
+/* Dots (mobile only) */
+.testimonials__dots {
+	display: flex;
+	justify-content: center;
+	gap: var(--dot-gap);
+	margin-top: clamp(34px, 6vw, 60px);
+}
+
+.testimonials__dot {
+	width: var(--dot);
+	height: var(--dot);
+	border-radius: 999px;
+	border: 0;
+	background: var(--pink);
+	cursor: pointer;
+	padding: 0;
+}
+
+.testimonials__dot.is-active {
+	background: var(--maroon);
+}
+
+/* desktop hides dots (like your mock) */
+@media (min-width: 901px) {
+	.testimonials__dots {
+		display: none;
+	}
+}
+
+/* Prev/Next (desktop only) */
+.testimonials__nav {
+	display: none;
+	margin-top: clamp(44px, 6vw, 80px);
+	justify-content: center;
+	gap: clamp(40px, 8vw, 120px);
+	align-items: center;
+}
+
+@media (min-width: 901px) {
+	.testimonials__nav {
+		display: flex;
+	}
+}
+
+.testimonials__btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 16px;
+
+	background: transparent;
+	border: 0;
+	cursor: pointer;
+
+	font-family: var(--ff-ui);
+	font-weight: 500;
+	font-size: 18px;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: #1f1f1f;
+	padding: 10px 8px;
+}
+
+.testimonials__arrow {
+	display: inline-block;
+	width: 90px;
+	height: 2px;
+	background: var(--c-accent);
+	position: relative;
+}
+
+.testimonials__arrow--left::before,
+.testimonials__arrow--right::before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	width: 10px;
+	height: 10px;
+	border: 2px solid var(--c-accent);
+	border-left: 0;
+	border-top: 0;
+	transform: translateY(-50%) rotate(-45deg);
+}
+
+.testimonials__arrow--left::before {
+	left: -2px;
+	transform: translateY(-50%) rotate(135deg);
+}
+
+.testimonials__arrow--right::before {
+	right: -2px;
+	transform: translateY(-50%) rotate(-45deg);
+}
+.testimonials__viewport {
+	touch-action: pan-y; /* allow vertical scroll; we handle horizontal swipe */
+}
+.testimonials__viewport {
+	touch-action: pan-y; /* allow vertical scroll; we handle horizontal swipe */
+}
+/* =========================================================
+   Testimonials: Mobile alignment fix
+   - gap on track causes right-shift when slides are 100%
+   ========================================================= */
+
+/* Mobile: no gap between slides, use padding instead */
+@media (max-width: 900px) {
+	.testimonials__track {
+		gap: 0; /* IMPORTANT: fixes right-shift */
+	}
+
+	/* Make each slide truly centered in viewport */
+	.testimonial {
+		flex: 0 0 100%;
+		padding-inline: 0; /* remove inner padding that can stack */
+	}
+
+	/* Add safe side padding for the whole slider area */
+	.section--testimonials .container {
+		padding-inline: clamp(18px, 6vw, 28px);
+	}
+}
