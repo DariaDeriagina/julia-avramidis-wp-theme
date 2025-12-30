@@ -87,3 +87,12 @@ function julia_enqueue_assets() {
 		true
 	);
 }
+add_filter( 'allowed_block_types_all', function( $allowed_blocks ) {
+  return [
+    'core/paragraph',
+    'core/heading',
+    'core/list',
+    'core/quote',
+    'core/image',
+  ];
+} );

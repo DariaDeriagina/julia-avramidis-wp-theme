@@ -20,7 +20,7 @@ if (!$page_id) {
 
 
 /* =========================================================
-   1) HERO defaults (fallbacks keep layout stable)
+   1) MARK:  HERO defaults (fallbacks keep layout stable)
    ========================================================= */
 $hero_headline   = 'Where Scenes Find Their Voice';
 $hero_subtitle   = 'Crafting scripts that linger long after the final frame.';
@@ -164,7 +164,7 @@ $headline_with_break = preg_replace('/\s+Find\s+/i', '<br>Find ', $headline_safe
 
 <?php
 /**
- * ABOUT section (Home)
+ * MARK: ABOUT section (Home)
  * ACF Group: about
  */
 
@@ -634,14 +634,156 @@ if (function_exists('get_field')) {
   </div>
 </section>
 
+<?php
+/* =========================================================
+   MARK: DIVIDER (Editorial Transition)
+   ========================================================= */
 
-  <!-- =========================================================
-       PLACEHOLDER SECTIONS (keep for now)
-       ========================================================= -->
+$divider_text  = 'WHERE WORDS BECOME MOMENTS.';
+$divider_bg_id = 0;
+$divider_color = '#7a0000';
+
+if (function_exists('get_field')) {
+  $divider_text  = get_field('divider_text', $page_id) ?: $divider_text;
+  $divider_bg_id = (int) get_field('divider_bg', $page_id);
+  $divider_color = get_field('divider_color', $page_id) ?: $divider_color;
+}
+?>
+
+<section class="section-divider"
+  style="--divider-accent: <?php echo esc_attr($divider_color); ?>;"
+  aria-hidden="true"
+>
+  <div class="divider-inner">
+
+    <div class="divider-text">
+      <?php echo esc_html($divider_text); ?>
+    </div>
+
+    <?php if ($divider_bg_id) : ?>
+      <div class="divider-image" aria-hidden="true">
+        <?php
+          echo wp_get_attachment_image(
+            $divider_bg_id,
+            'large',
+            false,
+            [
+              'class'    => 'divider-image__img',
+              'alt'      => '',
+              'loading'  => 'lazy',
+              'decoding' => 'async',
+              'sizes'    => '(max-width: 900px) 90vw, 45vw',
+            ]
+          );
+        ?>
+      </div>
+    <?php endif; ?>
+
+  </div>
+</section>
 
 
+<?php
+/* =========================================================
+   MARK: CONTACT (ACF-driven, with image)
+========================================================= */
 
-  <section id="contact" class="section"><div class="container"><h2>Contact</h2></div></section>
+$page_id = (int) get_option('page_on_front') ?: get_queried_object_id();
+
+/* Defaults */
+$contact_title    = 'CONTACT';
+$contact_subtitle = 'Tell me a little about your project, and I’ll get back to you personally.';
+$submit_label     = 'SEND MESSAGE';
+$recipient_email  = get_option('admin_email');
+$contact_image_id = 0;
+
+/* ACF */
+if (function_exists('get_field')) {
+  $contact_title    = get_field('contact_title', $page_id) ?: $contact_title;
+  $contact_subtitle = get_field('contact_subtitle', $page_id) ?: $contact_subtitle;
+  $submit_label     = get_field('submit_label', $page_id) ?: $submit_label;
+  $recipient_email  = get_field('recipient_email', $page_id) ?: $recipient_email;
+  $contact_image_id = (int) get_field('contact_image', $page_id);
+}
+?>
+
+<section id="contact" class="section section--contact" aria-labelledby="contact-title">
+  <div class="contact-layout">
+
+    <!-- =========================
+         LEFT: FORM
+         ========================= -->
+    <div class="contact-panel">
+      <header class="contact-header">
+        <h2 id="contact-title" class="contact-title">
+          <?php echo esc_html($contact_title); ?>
+        </h2>
+
+        <p class="contact-subtitle">
+          <?php echo esc_html($contact_subtitle); ?>
+        </p>
+      </header>
+
+      <form class="contact-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+        <input type="hidden" name="action" value="contact_form_submit">
+        <input type="hidden" name="recipient" value="<?php echo esc_attr($recipient_email); ?>">
+        <?php wp_nonce_field('contact_form_nonce', 'contact_nonce'); ?>
+
+        <div class="form-field">
+          <label for="cf-name">Your name</label>
+          <input id="cf-name" name="name" type="text" required>
+        </div>
+
+        <div class="form-field">
+          <label for="cf-email">Email</label>
+          <input id="cf-email" name="email" type="email" required>
+        </div>
+
+        <div class="form-field">
+          <label for="cf-project">Project</label>
+          <input id="cf-project" name="project" type="text">
+        </div>
+
+        <div class="form-field">
+          <label for="cf-message">
+            What are you working on?<br>
+            <span>(script, short film, feature, etc.)</span>
+          </label>
+          <textarea id="cf-message" name="message" rows="4" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn--primary">
+          <?php echo esc_html($submit_label); ?>
+        </button>
+      </form>
+    </div>
+
+    <!-- =========================
+         RIGHT: IMAGE
+         ========================= -->
+    <?php if ($contact_image_id) : ?>
+      <div class="contact-media" aria-hidden="true">
+        <?php
+          echo wp_get_attachment_image(
+            $contact_image_id,
+            'large',
+            false,
+            [
+              'class'    => 'contact-media__img',
+              'alt'      => '',
+              'loading'  => 'lazy',
+              'decoding' => 'async',
+              'sizes'    => '(max-width: 900px) 100vw, 45vw',
+            ]
+          );
+        ?>
+      </div>
+    <?php endif; ?>
+
+  </div>
+</section>
+
+
 
 </main>
 

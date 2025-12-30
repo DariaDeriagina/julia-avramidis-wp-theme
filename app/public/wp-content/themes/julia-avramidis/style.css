@@ -1088,3 +1088,550 @@ body.admin-bar .site-header {
 		padding-inline: clamp(18px, 6vw, 28px);
 	}
 }
+/* =====================================
+   MARK: BLOG (Index)
+===================================== */
+
+/* Blog hero */
+.section--blog-hero {
+	padding: clamp(72px, 9vw, 120px) 20px 48px;
+	text-align: center;
+}
+
+.blog-title {
+	margin: 0 0 14px;
+	font-family: var(--ff-ui);
+	font-size: clamp(34px, 4.5vw, 44px);
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+}
+
+/* Blog section */
+.section--blog {
+	padding: 40px 20px 120px;
+}
+
+/* Framed container */
+.blog-frame {
+	border: 1px solid #d9d9d9;
+	padding: clamp(28px, 4vw, 56px);
+}
+
+/* Grid */
+.blog-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: clamp(28px, 4vw, 44px);
+	align-items: start;
+}
+
+/* Blog card */
+.blog-card {
+	background: #f7f2ec;
+}
+
+/* Entire card clickable */
+.blog-card__link {
+	display: block;
+	color: inherit;
+	text-decoration: none;
+}
+
+/* Image */
+.blog-card__image img {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+
+/* Content */
+.blog-card__content {
+	padding: 26px;
+}
+
+.blog-card__title {
+	margin: 0 0 14px;
+	font-family: var(--ff-serif);
+	font-size: 24px;
+	line-height: 1.2;
+}
+
+.blog-card__excerpt {
+	margin: 0;
+	font-family: var(--ff-sans);
+	font-size: 15px;
+	line-height: 1.6;
+	color: var(--c-text);
+}
+
+/* Pagination */
+.blog-pagination {
+	margin-top: 72px;
+	text-align: center;
+}
+
+.blog-pagination .page-numbers {
+	margin: 0 6px;
+	font-family: var(--ff-sans);
+	font-size: 14px;
+	text-decoration: none;
+	color: var(--c-text);
+}
+
+.blog-pagination .current {
+	font-weight: 600;
+	text-decoration: underline;
+}
+
+/* =====================
+   BLOG — MOBILE
+===================== */
+
+@media (max-width: 900px) {
+	.blog-frame {
+		padding: 24px;
+	}
+
+	.blog-grid {
+		grid-template-columns: 1fr;
+	}
+}
+/* =====================================
+   MARK: SINGLE POST (Content Only)
+===================================== */
+
+/* Page wrapper */
+.single-post .site-main {
+	padding-block: clamp(72px, 9vw, 120px);
+}
+
+/* Article container (NOT header) */
+.single-post article {
+	max-width: 720px;
+	margin-inline: auto;
+	padding-inline: 20px;
+}
+
+/* -------------------------------------
+   Title
+------------------------------------- */
+.single-post__title {
+	margin: 0 0 36px;
+	font-family: var(--ff-display);
+	font-size: clamp(34px, 4.5vw, 44px);
+	line-height: 1.1;
+}
+
+/* -------------------------------------
+   Featured image
+------------------------------------- */
+.single-post__featured-image {
+	margin: 0 0 52px;
+}
+
+.single-post__featured-image img {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+
+/* -------------------------------------
+   Content typography
+------------------------------------- */
+.single-post__content {
+	font-family: var(--ff-sans);
+	font-size: 17px;
+	line-height: 1.8;
+	color: var(--c-text);
+}
+
+.single-post__content p {
+	margin: 0 0 1.7em;
+}
+
+.single-post__content h2 {
+	margin: 3.2em 0 1.2em;
+	font-family: var(--ff-serif);
+	font-size: 26px;
+	line-height: 1.25;
+}
+/* =========================================================
+   MARK: DIVIDER (Editorial Transition)
+   ========================================================= */
+
+.section-divider {
+	position: relative;
+	border-top: 1px solid var(--divider-accent, #7a0000);
+	border-bottom: 1px solid var(--divider-accent, #7a0000);
+	background-color: #1b0000;
+	overflow: hidden;
+}
+
+.divider-inner {
+	display: grid;
+	grid-template-columns: 1fr minmax(320px, 42%);
+	align-items: center;
+
+	/* 🔑 control height here */
+	min-height: clamp(160px, 18vw, 260px);
+}
+
+.divider-text {
+	padding-inline: clamp(24px, 6vw, 120px);
+	z-index: 2;
+
+	font-family: var(--font-serif);
+	font-size: clamp(34px, 5vw, 64px);
+	font-weight: 500;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #ffffff;
+}
+
+/* Right image panel */
+.divider-image {
+	position: relative;
+	height: 100%;
+}
+
+.divider-image::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		90deg,
+		rgba(27, 0, 0, 1) 0%,
+		rgba(27, 0, 0, 0.6) 35%,
+		rgba(27, 0, 0, 0) 100%
+	);
+	z-index: 1;
+}
+
+.divider-image__img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+@media (max-width: 768px) {
+	.divider-inner {
+		grid-template-columns: 1fr 38%;
+		min-height: 220px;
+	}
+
+	.divider-text {
+		padding-inline: 20px;
+		font-size: clamp(26px, 5vw, 34px);
+		line-height: 1.15;
+	}
+
+	.divider-image {
+		height: 100%;
+	}
+}
+/* =========================================================
+  MARK: CONTACT SECTION
+========================================================= */
+/* =========================================================
+   CONTACT SECTION
+========================================================= */
+
+.section--contact {
+	padding-block: clamp(72px, 8vw, 120px);
+	background: var(--c-bg);
+}
+
+/* =========================================================
+   CONTACT HEADER
+========================================================= */
+
+.contact-header {
+	text-align: center;
+	margin-bottom: clamp(32px, 4vw, 56px);
+}
+
+.contact-title {
+	margin: 0;
+	font-family: var(--ff-display);
+	font-size: clamp(28px, 4vw, 42px);
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+}
+
+.contact-subtitle {
+	margin-top: 12px;
+	color: var(--c-accent);
+	font-family: var(--ff-serif);
+}
+
+/* =========================================================
+   CONTACT LAYOUT
+========================================================= */
+
+.contact-layout {
+	display: grid;
+	grid-template-columns: minmax(420px, 520px) 1fr;
+	gap: clamp(40px, 6vw, 96px);
+	align-items: stretch;
+
+	max-width: 1200px;
+	margin-inline: auto;
+	padding-inline: var(--gutter);
+}
+
+/* =========================================================
+   LEFT: FORM PANEL
+========================================================= */
+
+.contact-panel {
+	background: var(--c-bg);
+	border: 2px solid var(--c-accent);
+	padding: clamp(32px, 4vw, 48px);
+}
+
+.contact-panel .form-field {
+	margin-bottom: 22px;
+}
+
+.contact-panel label {
+	display: block;
+	font-size: 14px;
+	margin-bottom: 6px;
+}
+
+.contact-panel span {
+	font-size: 12px;
+	opacity: 0.7;
+}
+
+.contact-panel input,
+.contact-panel textarea {
+	width: 100%;
+	background: transparent;
+	border: none;
+	border-bottom: 2px solid var(--c-accent);
+	padding: 10px 4px;
+	font-family: inherit;
+	font-size: 16px;
+}
+
+.contact-panel input:focus,
+.contact-panel textarea:focus {
+	outline: none;
+	border-bottom-color: #4d0000;
+}
+
+.contact-panel .btn {
+	margin-top: 24px;
+}
+
+/* =========================================================
+   RIGHT: IMAGE
+========================================================= */
+
+.contact-media {
+	position: relative;
+	overflow: hidden;
+}
+
+.contact-media__img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+/* Optional vignette */
+.contact-media::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(
+		closest-side,
+		rgba(0, 0, 0, 0) 55%,
+		rgba(0, 0, 0, 0.45) 100%
+	);
+	pointer-events: none;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+	.contact-layout {
+		grid-template-columns: 1fr;
+	}
+
+	.contact-media {
+		height: 280px;
+		margin-top: 32px;
+	}
+}
+/* =========================================================
+  MARK: FOOTER
+========================================================= */
+
+.site-footer {
+	background: linear-gradient(90deg, #000 0%, #7a0000 100%);
+	color: #fff;
+	padding: clamp(56px, 6vw, 96px) var(--gutter);
+}
+
+.footer-inner {
+	max-width: 1200px;
+	margin-inline: auto;
+	display: grid;
+	grid-template-columns: 1.4fr 1fr 1fr;
+	align-items: center;
+	gap: clamp(32px, 6vw, 64px);
+}
+
+/* =========================================================
+   LOGOS
+========================================================= */
+
+.footer-logo img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+.footer-logo--mobile {
+	display: none;
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.footer-nav ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.footer-nav li {
+	margin-bottom: 12px;
+}
+
+.footer-nav a {
+	color: #fff;
+	text-decoration: none;
+	font-weight: 500;
+	letter-spacing: 0.04em;
+}
+
+.footer-nav a:hover {
+	opacity: 0.85;
+}
+
+/* =========================================================
+   SOCIAL BUTTONS
+========================================================= */
+
+.footer-socials {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	align-items: flex-start;
+}
+
+.footer-social {
+	width: 220px;
+	min-height: 48px;
+	border: 2px solid #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	color: #fff;
+	text-decoration: none;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	box-sizing: border-box;
+}
+
+.footer-social:hover {
+	background: rgba(255, 255, 255, 0.08);
+}
+
+.footer-social__icon img {
+	width: 14px;
+	height: 14px;
+	display: block;
+}
+
+/* =========================================================
+   BOTTOM BAR
+========================================================= */
+
+.footer-bottom {
+	margin-top: clamp(40px, 6vw, 64px);
+	text-align: center;
+	font-size: 14px;
+	line-height: 1.6;
+	opacity: 0.85;
+}
+
+.footer-bottom a {
+	color: #fff;
+	text-decoration: none;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.footer-bottom a:hover {
+	opacity: 1;
+}
+
+.footer-credit {
+	margin-top: 6px;
+	font-size: 13px;
+	opacity: 0.75;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+	.footer-inner {
+		grid-template-columns: 1fr;
+		text-align: center;
+	}
+
+	.footer-logo--desktop {
+		display: none;
+	}
+
+	.footer-logo--mobile {
+		display: block;
+		margin-bottom: 32px;
+	}
+
+	.footer-socials {
+		align-items: center;
+	}
+
+	.footer-social {
+		width: 200px;
+	}
+}
+
+/* =========================================================
+   FOOTER TYPOGRAPHY — ALL CAPS
+========================================================= */
+
+/* Footer navigation */
+.footer-nav a {
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	font-size: 14px;
+}
+
+/* Social buttons */
+.footer-social {
+	text-transform: uppercase;
+	letter-spacing: 0.14em;
+	font-size: 13px;
+}
